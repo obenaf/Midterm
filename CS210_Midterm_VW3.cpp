@@ -11,7 +11,11 @@
 #include<fstream>
 using namespace std;
 
+char nextChar;
+
+void analyze();
 void readChar(ifstream&);
+void lexSorting(int);
 
 int main(int argc, char **argv) {
     //sets I/O file names
@@ -23,20 +27,34 @@ int main(int argc, char **argv) {
     ofstream primeWrite(primeOutput);
 
     readChar(primeRead);
+    do {
+        analyze();
+    }
     return 0;
 }
 
 void readChar(ifstream &primeRead) {
     char activeChar;
-    string charClass;
+    int charClass;
     while(!primeRead.eof()) {
         primeRead.get(activeChar);
         if(isalpha(activeChar))
-        charClass = "ALPHA";
+        charClass = -1;
         else if(isdigit(activeChar))
-        charClass = "DIGIT";
+        charClass = 0;
         else
-        charClass = "UNK";
+        charClass = 1;
+        lexSorting(charClass);
     }
+}
+
+void lexSorting(int charClass) {
+    switch(charClass) {
+
+    }
+}
+
+void analyze() {
+
 }
 
