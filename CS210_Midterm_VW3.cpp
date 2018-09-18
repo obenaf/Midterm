@@ -5,18 +5,15 @@
  * 17 Sep 2018
  */
 
+#include<cstdio>
 #include<iostream>
+#include<string>
 #include<fstream>
 using namespace std;
 
-void fileManager(char*[]);
+void readChar(ifstream&);
 
 int main(int argc, char **argv) {
-    fileManager(argv);
-    return 0;
-}
-
-void fileManager(char *argv[]) {
     //sets I/O file names
     string primeInput = argv[1];
     string primeOutput = primeInput + ".cpy";
@@ -25,10 +22,21 @@ void fileManager(char *argv[]) {
     ifstream primeRead(primeInput);
     ofstream primeWrite(primeOutput);
 
-    //copies line by line to new file
-    string readLine;
+    readChar(primeRead);
+    return 0;
+}
+
+void readChar(ifstream &primeRead) {
+    char activeChar;
+    string charClass;
     while(!primeRead.eof()) {
-        getline(primeRead, readLine);
-        primeWrite << readLine << endl;
+        primeRead.get(activeChar);
+        if(isalpha(activeChar))
+        charClass = "ALPHA";
+        else if(isdigit(activeChar))
+        charClass = "DIGIT";
+        else
+        charClass = "UNK";
     }
 }
+
