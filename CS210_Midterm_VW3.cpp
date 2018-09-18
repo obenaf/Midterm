@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
     readChar(primeRead);
     do {
         analyze();
-    }
+    } while (nextChar != EOF);
     return 0;
 }
 
