@@ -88,3 +88,6 @@ string Operators[27] = {".", "<", ">", "(", ")", "+", "-", "*", "/",
                         "|", "&", ";", ",", ":", "[", "]", "=", ":=",
                         "..", "<<", ">>", "<>", "<=", ">=", "**",
                         "!=", "=>"};
+
+string lexClass[8] = {"comment", "operator", "string", "keyword", "character literal",
+                      "operator", "numeric literal", "UNK"};
