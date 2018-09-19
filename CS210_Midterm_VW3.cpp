@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
     ifstream primeRead(primeInput);
     ofstream primeWrite(primeOutput);
 
-    while(primeRead.eof()) { //Writes directly to out file for now
+    while(!primeRead.eof()) { //Writes directly to out file for now
         primeRead.get(activeChar);
         primeWrite << activeChar;
     }
@@ -75,3 +75,16 @@ void traverseWhiteSpace() {
 
 }
 
+//Keyword array
+string Keywords[37] = {"accessor", "and", "array", "begin", "bool",
+              "case", "character", "constant", "else", "elsif",
+              "end", "exit", "function", "if", "in", "integer",
+              "interface", "is", "loop", "module", "mutator",
+              "natural", "null", "of", "or", "others", "out",
+              "positive", "procedure", "range", "return", "struct",
+              "subtype", "then", "type", "when", "while"};
+
+string Operators[27] = {".", "<", ">", "(", ")", "+", "-", "*", "/",
+                        "|", "&", ";", ",", ":", "[", "]", "=", ":=",
+                        "..", "<<", ">>", "<>", "<=", ">=", "**",
+                        "!=", "=>"};
