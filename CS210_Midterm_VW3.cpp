@@ -5,7 +5,7 @@
  * 18 Sep 2018
  */
  //NOTE: I haven't decided how I want to write to the output file
- //yet, will implement that when I am further along.
+ //yet, will implement that when I am further along
 
 #include<cstdio>
 #include<iostream>
