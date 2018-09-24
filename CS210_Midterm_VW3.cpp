@@ -34,11 +34,10 @@ string sLexeme;
 char lexeme[63];
 char nextChar;
 int charClass;
-int lexLength;
+int lexLength = 0;
 string token;
 int nextToken;
 FILE *primeRead;
-FILE *primeWrite;
 //Function Headers
 bool strCompare();
 void analyze();
@@ -49,7 +48,7 @@ void unknown();
 //Classes
 #define ALPHA 0
 #define DIGIT 1
-#define UNK -1
+#define UNK 2
 
 int main(int argc, char **argv) {
     //sets I/O file names
@@ -71,7 +70,6 @@ int main(int argc, char **argv) {
 //Sorts characters into subgroups
 void analyze() {
     lexLength = 0; //resets lexLength
-    traverseSpace();
     switch(charClass) {
         case ALPHA:
             lexAdd();
@@ -104,7 +102,12 @@ void analyze() {
                 else
                     unknown();
                   break;
+        case EOF:
+            nextToken = EOF;
+            break;
             }
+
+
 
     }
 //Reads characters and determines char type
@@ -128,7 +131,7 @@ void lexAdd() {
 //finds the next character
 void traverseSpace() {
     while(isspace(nextChar))
-        getchar();
+        nextChar = getc(primeRead);
 }
 
 bool strCompare() {
