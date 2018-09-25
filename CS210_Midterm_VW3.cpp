@@ -3,6 +3,16 @@
  * github.com/obenaf
  * Midterm for CS-210
  * 24 Sep 2018
+ * NOTE:
+ * I have tried everything short of ritual sacrifice to
+ * get this program to read/write properly. I have an idea
+ * as to what the issue is but am about to tear my hair out.
+ * I have commented out my lex analysis logic but when I was
+ * stepping through the program it seemed to be moving through
+ * it properly. I apologize for the mess, through trying to
+ * solve the issue I have messed with everything.
+ *
+ * As of right now it accomplishes nothing.
  */
 #include<stdio.h>
 #include<iostream>
@@ -35,6 +45,7 @@ int lexLength;
 string token;
 int nextToken;
 FILE *primeRead;
+FILE *primeWrite;
 //Function Headers in order
 void readChar();
 void analyze();
@@ -42,9 +53,11 @@ void lexAdd();
 void traverseSpace();
 bool strCompare();
 //Character class definitions
-#define ALPHA 0
-#define DIGIT 1
-#define UNK 2
+#define ALPHA 1
+#define DIGIT 2
+#define UNK 3
+
+
 
 int main(int argc, char **argv) {
     //sets I/O file names
@@ -54,14 +67,15 @@ int main(int argc, char **argv) {
     ifstream primeRead(readFile);
     ofstream primeWrite(writeFile);
 
-    primeRead.get(nextChar);
+    primeRead >> nextChar;
     readChar();
-    while (nextToken != EOF) {
+    while (!primeRead.eof()) {
         analyze();
         primeWrite << lexeme << " (" << token << ")\n";
         traverseSpace();
         readChar();
     }
+    primeWrite << "PLEASE JUST FUCKING WORK";
     primeRead.close();
     primeWrite.close();
     return 0;
@@ -69,7 +83,7 @@ int main(int argc, char **argv) {
 //Reads characters and determines char type
 void readChar() {
     activeChar = nextChar;
-    if((nextChar = fgetc(primeRead)) != EOF) {
+    nextChar = fgetc(primeRead);
         if(isdigit(activeChar))
             charClass = DIGIT;
         else if(isalpha(activeChar))
@@ -77,12 +91,16 @@ void readChar() {
         else
             charClass = UNK;
     }
-    else charClass = EOF;
-}
 //Sorts characters into subgroups
 void analyze() {
     lexLength = 0; //resets lexLength
-    switch(charClass) {
+    while(nextChar != ' ') {
+        readChar();
+        lexAdd();
+    }
+    sLexeme = lexeme;
+    token = "UNK";
+    /*switch(charClass) {
         //if the char is a digit
         case DIGIT:
             while(nextChar != ' ') {
@@ -132,17 +150,18 @@ void analyze() {
         case EOF:
             nextToken = EOF;
             break;
-    }
+            }
+            */
     }
 //adds activeChar into the working lexeme
 void lexAdd() {
-    lexeme[lexLength++] = activeChar;
-    lexeme[lexLength] = 0;
+    lexeme[lexLength] = activeChar;
+    lexLength++;
 }
 //finds the next character
 void traverseSpace() {
     while(nextChar != ' ')
-nextChar = fgetc(primeRead);
+    readChar();
 }
 //compares the lexeme to keyword list
 bool strCompare() { //may improve search in future
