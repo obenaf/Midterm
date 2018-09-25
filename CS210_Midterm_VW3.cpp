@@ -51,8 +51,8 @@ int main(int argc, char **argv) {
     string readFile = argv[1];
     string writeFile = readFile + ".unk";
     //opens I/O files
-    ifstream primeRead(readFile, ios::in);
-    ofstream primeWrite(writeFile, ios::out);
+    ifstream primeRead(readFile);
+    ofstream primeWrite(writeFile);
 
     primeRead.get(nextChar);
     readChar();
