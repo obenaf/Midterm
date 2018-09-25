@@ -4,8 +4,6 @@
  * Midterm for CS-210
  * 24 Sep 2018
  */
- //NOTE: I haven't decided how I want to write to the output file
- //yet, will implement that when I am further along
 #include<stdio.h>
 #include<iostream>
 #include<string>
@@ -37,14 +35,13 @@ int lexLength;
 string token;
 int nextToken;
 FILE *primeRead;
-//Function Headers
-bool strCompare();
-void analyze();
+//Function Headers in order
 void readChar();
+void analyze();
 void lexAdd();
 void traverseSpace();
-void unknown();
-//Classes
+bool strCompare();
+//Character class definitions
 #define ALPHA 0
 #define DIGIT 1
 #define UNK 2
@@ -72,11 +69,11 @@ int main(int argc, char **argv) {
 //Reads characters and determines char type
 void readChar() {
     activeChar = nextChar;
-    if((nextChar = getc(primeRead)) != EOF) {
-        if(isalpha(activeChar))
-            charClass = ALPHA;
-        else if(isdigit(activeChar))
+    if((nextChar = fgetc(primeRead)) != EOF) {
+        if(isdigit(activeChar))
             charClass = DIGIT;
+        else if(isalpha(activeChar))
+            charClass = ALPHA;
         else
             charClass = UNK;
     }
@@ -86,6 +83,7 @@ void readChar() {
 void analyze() {
     lexLength = 0; //resets lexLength
     switch(charClass) {
+        //if the char is a digit
         case DIGIT:
             while(nextChar != ' ') {
                 lexAdd();
@@ -94,24 +92,27 @@ void analyze() {
             sLexeme = activeChar;
             token = "UNK";
             break;
+            //if the value is alphabetical
         case ALPHA: //Case for keywords and identifiers
             //As long as the chars meet criteria for keywords/identifiers
             while (charClass == ALPHA || charClass == DIGIT) {
                 lexAdd();
                 readChar();
             }
-            sLexeme = lexeme;
+            sLexeme = lexeme; //converts lexeme array to string
             if (strCompare())//if lexeme matches keyword list
                 token = tokClass[3]; //sets as keyword
             else //not a keyword
                 token = tokClass[6]; //sets as identifier
             break;
+            //if the variable is not alphanumerical
         case UNK:
             if (activeChar == '/' && nextChar == '*') { //if lexeme is comment
                 do {
                     lexAdd();
                     readChar();
                 } while (activeChar != '*' && nextChar != '/');
+                token = tokClass[0]; //sets token to comment
             } else if (activeChar == '"') { //if lexeme is string
                 do {
                     lexAdd();
@@ -119,20 +120,19 @@ void analyze() {
                 } while (activeChar != '"');
             }
                 //else if(activeChar ==  NONFUNCTIONAL
-            else
+            else {
                 while(nextChar != ' ') {
                     lexAdd();
                     readChar();
                 }
-            sLexeme = activeChar;
-            token = "UNK";
+                sLexeme = activeChar;
+                token = "UNK";
+            }
             break;
         case EOF:
             nextToken = EOF;
             break;
     }
-
-
     }
 //adds activeChar into the working lexeme
 void lexAdd() {
@@ -141,11 +141,11 @@ void lexAdd() {
 }
 //finds the next character
 void traverseSpace() {
-
-primeRead get(nextChar);
+    while(nextChar != ' ')
+nextChar = fgetc(primeRead);
 }
-
-bool strCompare() {
+//compares the lexeme to keyword list
+bool strCompare() { //may improve search in future
     for(int i = 0; i < 37; i++) {
         if(sLexeme == Keywords[i])
             return true;
