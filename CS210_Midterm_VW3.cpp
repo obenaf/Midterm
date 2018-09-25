@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
         traverseSpace();
         readChar();
     }
-    primeWrite << "PLEASE JUST FUCKING WORK";
+    primeWrite << "Is anybody out there?";
     primeRead.close();
     primeWrite.close();
     return 0;
