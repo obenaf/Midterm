@@ -33,7 +33,7 @@ char lexeme[64];
 int charClass;
 int lexLength;
 string token;
-//I/O filestreams
+//I/O file streams
 ifstream primeRead;
 ofstream primeWrite;
 //Function Headers in order
@@ -82,11 +82,10 @@ void readChar() {
 //Sorts characters into token groups
 void analyze() {
     lexLength = 0; //resets lexLength
-    readChar();
     do {
-        lexAdd();
         readChar();
-    } while(!(iswspace(nextChar) || nextChar == '\n'));
+        lexAdd();
+    } while(!isspace(nextChar));
     sLexeme = lexeme; //converts to string
     token = tokClass[7]; //assigns to unk
     /*
@@ -138,10 +137,9 @@ void analyze() {
             }
             break;
         case EOF:
-            nextToken = EOF;
             break;
-    }
-         */
+    } */
+
     }
 //adds activeChar into the working lexeme
 void lexAdd() {
@@ -152,8 +150,7 @@ void lexAdd() {
 void traverseSpace() {
         do {
             readChar();
-        } while(isspace(activeChar));
-
+        }while(nextChar == ' ');
 }
 //compares the lexeme to keyword list
 bool strCompare() { //may improve search in future
