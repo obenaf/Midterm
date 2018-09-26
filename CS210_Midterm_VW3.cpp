@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
     do {
         analyze();
         primeWrite << sLexeme << " (" << token << ")\n";
-        memset(lexeme, 0, 64); //clears lexeme array
+        memset(lexeme, 0, 64); //clear lexeme array
         traverseSpace();
     } while (!primeRead.eof());
     primeRead.close();
