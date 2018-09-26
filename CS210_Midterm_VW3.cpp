@@ -3,10 +3,13 @@
  * github.com/obenaf
  * Midterm for CS-210
  * 24 Sep 2018
+ * Right now the program considers any block of characters separated by spaces
+ * to be a single lexeme. This will change when lex logic is added in.
+ * There are also weird issues with sorting out newline characters.
  */
 #include<stdio.h>
 #include<iostream>
-#include<string>
+#include<cstring>
 #include<fstream>
 using namespace std;
 //Keyword array
@@ -59,7 +62,7 @@ int main(int argc, char **argv) {
     do {
         analyze();
         primeWrite << sLexeme << " (" << token << ")\n";
-        memset(lexeme, 0, 64); //clear lexeme array
+        memset(lexeme, 0, sizeof(lexeme));
         traverseSpace();
     } while (!primeRead.eof());
     primeRead.close();
@@ -88,6 +91,7 @@ void analyze() {
     } while(!isspace(nextChar));
     sLexeme = lexeme; //converts to string
     token = tokClass[7]; //assigns to unk
+    //Logic here is not ready for implementation
     /*
     switch(charClass) {
         //if the char is a digit
@@ -150,7 +154,7 @@ void lexAdd() {
 void traverseSpace() {
         do {
             readChar();
-        }while(nextChar == ' ');
+        }while(nextChar == ' ');//When attempting to sort out newlines this function breaks
 }
 //compares the lexeme to keyword list
 bool strCompare() { //may improve search in future
