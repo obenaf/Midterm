@@ -33,8 +33,9 @@ char lexeme[64];
 int charClass;
 int lexLength;
 string token;
-int nextToken;
-FILE *primeRead;
+//I/O filestreams
+ifstream primeRead;
+ofstream primeWrite;
 //Function Headers in order
 void readChar();
 void analyze();
@@ -44,24 +45,23 @@ bool strCompare();
 //Character class definitions
 #define ALPHA 0
 #define DIGIT 1
-#define UNK 2
+#define UNK 99
 
 int main(int argc, char **argv) {
     //sets I/O file names
     string readFile = argv[1];
     string writeFile = readFile + ".unk";
     //opens I/O files
-    ifstream primeRead(readFile, ios::in);
-    ofstream primeWrite(writeFile, ios::out);
+    primeRead.open(readFile);
+    primeWrite.open(writeFile);
 
     primeRead.get(nextChar);
-    readChar();
-    while (nextToken != EOF) {
+    do {
         analyze();
-        primeWrite << lexeme << " (" << token << ")\n";
+        primeWrite << sLexeme << " (" << token << ")\n";
+        memset(lexeme, 0, 64); //clears lexeme array
         traverseSpace();
-        readChar();
-    }
+    } while (!primeRead.eof());
     primeRead.close();
     primeWrite.close();
     return 0;
@@ -69,7 +69,8 @@ int main(int argc, char **argv) {
 //Reads characters and determines char type
 void readChar() {
     activeChar = nextChar;
-    if((nextChar = fgetc(primeRead)) != EOF) {
+    primeRead.get(nextChar);
+    if(activeChar != EOF) {
         if(isdigit(activeChar))
             charClass = DIGIT;
         else if(isalpha(activeChar))
@@ -77,11 +78,18 @@ void readChar() {
         else
             charClass = UNK;
     }
-    else charClass = EOF;
 }
-//Sorts characters into subgroups
+//Sorts characters into token groups
 void analyze() {
     lexLength = 0; //resets lexLength
+    readChar();
+    do {
+        lexAdd();
+        readChar();
+    } while(!(iswspace(nextChar) || nextChar == '\n'));
+    sLexeme = lexeme; //converts to string
+    token = tokClass[7]; //assigns to unk
+    /*
     switch(charClass) {
         //if the char is a digit
         case DIGIT:
@@ -133,16 +141,19 @@ void analyze() {
             nextToken = EOF;
             break;
     }
+         */
     }
 //adds activeChar into the working lexeme
 void lexAdd() {
-    lexeme[lexLength++] = activeChar;
-    lexeme[lexLength] = 0;
+    lexeme[lexLength] = activeChar;
+    lexLength++;
 }
 //finds the next character
 void traverseSpace() {
-    while(nextChar != ' ')
-nextChar = fgetc(primeRead);
+        do {
+            readChar();
+        } while(isspace(activeChar));
+
 }
 //compares the lexeme to keyword list
 bool strCompare() { //may improve search in future
