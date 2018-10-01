@@ -33,7 +33,6 @@ char activeChar;
 char nextChar;
 string sLexeme;
 char lexeme[64];
-int charClass;
 int lexLength;
 string token;
 //I/O file streams
@@ -46,9 +45,8 @@ void lexAdd();
 void traverseSpace();
 bool strCompare();
 //Character class definitions
-#define ALPHA 0
-#define DIGIT 1
-#define UNK 99
+enum cClass{ALPHA, DIGIT, UNK};
+cClass charClass;
 
 int main(int argc, char **argv) {
     //sets I/O file names
@@ -60,6 +58,7 @@ int main(int argc, char **argv) {
 
     primeRead.get(nextChar);
     do {
+        lexLength = 0; //resets lexLength
         analyze();
         primeWrite << sLexeme << " (" << token << ")\n";
         memset(lexeme, 0, sizeof(lexeme));
@@ -84,7 +83,6 @@ void readChar() {
 }
 //Sorts characters into token groups
 void analyze() {
-    lexLength = 0; //resets lexLength
     do {
         readChar();
         lexAdd();
