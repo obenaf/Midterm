@@ -152,7 +152,7 @@ void lexAdd() {
 void traverseSpace() {
         do {
             readChar();
-        }while(nextChar == ' ');//When attempting to sort out newlines this function breaks
+        }while(nextChar == ' ' || nextChar == '\n');//When attempting to sort out newlines this function breaks
 }
 //compares the lexeme to keyword list
 bool strCompare() { //may improve search in future
