@@ -7,8 +7,8 @@
  * to be a single lexeme. This will change when lex logic is added in.
  * There are also weird issues with sorting out newline characters.
  */
-#include<stdio.h>
 #include<iostream>
+#include<string>
 #include<cstring>
 #include<fstream>
 using namespace std;
@@ -68,6 +68,7 @@ int main(int argc, char **argv) {
     primeWrite.close();
     return 0;
 }
+
 //Reads characters and determines char type
 void readChar() {
     activeChar = nextChar;
@@ -81,6 +82,7 @@ void readChar() {
             charClass = UNK;
     }
 }
+
 //Sorts characters into token groups
 void analyze() {
     do {
@@ -143,17 +145,20 @@ void analyze() {
     } */
 
     }
+
 //adds activeChar into the working lexeme
 void lexAdd() {
     lexeme[lexLength] = activeChar;
     lexLength++;
 }
+
 //finds the next character
 void traverseSpace() {
         do {
             readChar();
         }while(nextChar == ' ' || nextChar == '\n');//When attempting to sort out newlines this function breaks
 }
+
 //compares the lexeme to keyword list
 bool strCompare() { //may improve search in future
     for(int i = 0; i < 37; i++) {
