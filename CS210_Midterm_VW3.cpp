@@ -7,6 +7,8 @@
  * to be a single lexeme. This will change when lex logic is added in.
  * There are also weird issues with sorting out newline characters.
  */
+
+#include"stdio.h"
 #include<iostream>
 #include<string>
 #include<cstring>
@@ -45,13 +47,13 @@ void lexAdd();
 void traverseSpace();
 bool strCompare();
 //Character class definitions
-enum cClass{ALPHA, DIGIT, UNK};
+enum cClass{ALPHA, DIGIT, UNK, END};
 cClass charClass;
 
 int main(int argc, char **argv) {
     //sets I/O file names
     string readFile = argv[1];
-    string writeFile = readFile + ".unk";
+    string writeFile = readFile + ".cpy";
     //opens I/O files
     primeRead.open(readFile);
     primeWrite.open(writeFile);
@@ -63,7 +65,7 @@ int main(int argc, char **argv) {
         primeWrite << sLexeme << " (" << token << ")\n";
         memset(lexeme, 0, sizeof(lexeme));
         traverseSpace();
-    } while (!primeRead.eof());
+    } while (!(primeRead.eof()));
     primeRead.close();
     primeWrite.close();
     return 0;
@@ -80,71 +82,70 @@ void readChar() {
             charClass = ALPHA;
         else
             charClass = UNK;
-    }
+    } else
+        charClass = END;
 }
 
 //Sorts characters into token groups
 void analyze() {
-    do {
-        readChar();
-        lexAdd();
-    } while(!isspace(nextChar));
-    sLexeme = lexeme; //converts to string
-    token = tokClass[7]; //assigns to unk
-    //Logic here is not ready for implementation
-    /*
+    readChar();
     switch(charClass) {
         //if the char is a digit
         case DIGIT:
-            while(nextChar != ' ') {
+            do {
                 lexAdd();
                 readChar();
-            }
+            } while(nextChar != ' ');
             sLexeme = activeChar;
-            token = "UNK";
+            token = tokClass[5];
             break;
-            //if the value is alphabetical
-        case ALPHA: //Case for keywords and identifiers
-            //As long as the chars meet criteria for keywords/identifiers
-            while (charClass == ALPHA || charClass == DIGIT) {
-                lexAdd();
-                readChar();
-            }
-            sLexeme = lexeme; //converts lexeme array to string
-            if (strCompare())//if lexeme matches keyword list
-                token = tokClass[3]; //sets as keyword
-            else //not a keyword
-                token = tokClass[6]; //sets as identifier
-            break;
-            //if the variable is not alphanumerical
-        case UNK:
-            if (activeChar == '/' && nextChar == '*') { //if lexeme is comment
-                do {
-                    lexAdd();
-                    readChar();
-                } while (activeChar != '*' && nextChar != '/');
-                token = tokClass[0]; //sets token to comment
-            } else if (activeChar == '"') { //if lexeme is string
-                do {
-                    lexAdd();
-                    readChar();
-                } while (activeChar != '"');
-            }
-                //else if(activeChar ==  NONFUNCTIONAL
-            else {
-                while(nextChar != ' ') {
-                    lexAdd();
-                    readChar();
-                }
-                sLexeme = activeChar;
-                token = "UNK";
-            }
-            break;
-        case EOF:
-            break;
-    } */
 
-    }
+            //if the value is alphabetical
+            case ALPHA: //Case for keywords and identifiers
+                //As long as the chars meet criteria for keywords/identifiers
+                do {
+                    lexAdd();
+                    readChar();
+                } while (charClass == ALPHA || charClass == DIGIT);
+            sLexeme = lexeme; //converts lexeme array to string
+
+                if (strCompare())//if lexeme matches keyword list
+                    token = tokClass[3]; //sets as keyword
+                else //not a keyword
+                    token = tokClass[6]; //sets as identifier
+                break;
+
+            //if the variable is not alphanumerical
+            case UNK:
+                if (activeChar == '/' && nextChar == '*') { //if lexeme is comment
+                    do {
+                        lexAdd();
+                        readChar();
+                    } while (activeChar != '*' && nextChar != '/');
+                    token = tokClass[0]; //sets token to comment
+                }
+                else if (activeChar == '"') { //if lexeme is string
+                    do {
+                        lexAdd();
+                        readChar();
+                    } while (activeChar != '"');
+                }
+                    //else if(activeChar ==  NONFUNCTIONAL
+                else {
+                    while(nextChar != ' ') {
+                        lexAdd();
+                        readChar();
+                    }
+                    sLexeme = activeChar;
+                    token = "UNK";
+                }
+                break;
+
+            case END:
+                break;
+        }
+}
+
 
 //adds activeChar into the working lexeme
 void lexAdd() {
@@ -156,7 +157,7 @@ void lexAdd() {
 void traverseSpace() {
         do {
             readChar();
-        }while(nextChar == ' ' || nextChar == '\n');//When attempting to sort out newlines this function breaks
+        } while(nextChar == ' ');//When attempting to sort out newlines this function breaks
 }
 
 //compares the lexeme to keyword list
