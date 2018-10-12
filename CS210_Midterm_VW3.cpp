@@ -103,11 +103,12 @@ void analyze() {
             //if the value is alphabetical
             case ALPHA: //Case for keywords and identifiers
                 //As long as the chars meet criteria for keywords/identifiers
-                do {
+                while (nextChar != ' ') {
                     lexAdd();
                     readChar();
-                } while (charClass == ALPHA || charClass == DIGIT);
-            sLexeme = lexeme; //converts lexeme array to string
+                }
+                lexAdd();
+        sLexeme = lexeme; //converts lexeme array to string
 
                 if (strCompare())//if lexeme matches keyword list
                     token = tokClass[3]; //sets as keyword
@@ -155,9 +156,9 @@ void lexAdd() {
 
 //finds the next character
 void traverseSpace() {
-        do {
+    while(nextChar == ' ' || nextChar == '\n' || nextChar == EOF) {
             readChar();
-        } while(nextChar == ' ');//When attempting to sort out newlines this function breaks
+        }
 }
 
 //compares the lexeme to keyword list
