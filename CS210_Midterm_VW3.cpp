@@ -87,7 +87,7 @@ void analyze() {
             token = tokClass[5];
             break;
 
-            //FOR KEYWORDS AND IDENTIFIERS    ALMOST WORKS
+            //FOR KEYWORDS AND IDENTIFIERS    WORKS
             case ALPHA:
                 //As long as the chars meet criteria for keywords/identifiers
                 while (!(nextChar == ' ' || nextChar == '\n' || opCompare2())) {
@@ -129,7 +129,19 @@ void analyze() {
                     sLexeme = lexeme;
                     token = tokClass[2]; //sets token to string
                 }
-                //FOR OPERATORS
+                //FOR CHARACTER LITERALS
+                else if (activeChar == 39) {
+                    do {
+                        lexAdd();
+                        readChar();
+                    } while(nextChar != 39);
+                    lexAdd();
+                    readChar();
+                    lexAdd();
+                    sLexeme = lexeme;
+                    token = tokClass[4];
+                }
+                //FOR OPERATORS    WORKS
                 else {
                     while(!(activeChar == ' ' || activeChar == '\n' || charClass != UNK)) {
                         lexAdd();
