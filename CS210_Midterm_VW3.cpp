@@ -10,7 +10,6 @@
 
 #include"stdio.h"
 #include<iostream>
-#include<string>
 #include<cstring>
 #include<fstream>
 using namespace std;
@@ -34,8 +33,8 @@ string tokClass[8] = {"comment", "operator", "string", "keyword", "character lit
 char activeChar;
 char nextChar;
 string sLexeme;
-char lexeme[64];
-int lexLength;
+char lexeme[32];
+int lexLength = 0;
 string token;
 //I/O file streams
 ifstream primeRead;
@@ -45,6 +44,7 @@ void readChar();
 void analyze();
 void lexAdd();
 void traverseSpace();
+void cleanUp();
 bool strCompare();
 //Character class definitions
 enum cClass{ALPHA, DIGIT, UNK, END};
@@ -59,13 +59,14 @@ int main(int argc, char **argv) {
     primeWrite.open(writeFile);
 
     primeRead.get(nextChar);
-    do {
-        lexLength = 0; //resets lexLength
+    while (!(primeRead.eof())) {
         analyze();
+        cleanUp();
         primeWrite << sLexeme << " (" << token << ")\n";
         memset(lexeme, 0, sizeof(lexeme));
+        lexLength = 0; //resets lexLength
         traverseSpace();
-    } while (!(primeRead.eof()));
+    }
     primeRead.close();
     primeWrite.close();
     return 0;
@@ -91,11 +92,11 @@ void analyze() {
     readChar();
     switch(charClass) {
         //if the char is a digit
-        case DIGIT:
-            do {
+        case DIGIT: //numeric literal, may need specification
+            while(!isspace(activeChar)){
                 lexAdd();
                 readChar();
-            } while(nextChar != ' ');
+            }
             sLexeme = activeChar;
             token = tokClass[5];
             break;
@@ -103,12 +104,12 @@ void analyze() {
             //if the value is alphabetical
             case ALPHA: //Case for keywords and identifiers
                 //As long as the chars meet criteria for keywords/identifiers
-                while (nextChar != ' ') {
+                while (!isspace(activeChar)){
                     lexAdd();
                     readChar();
                 }
                 lexAdd();
-        sLexeme = lexeme; //converts lexeme array to string
+                sLexeme = lexeme; //converts lexeme array to string
 
                 if (strCompare())//if lexeme matches keyword list
                     token = tokClass[3]; //sets as keyword
@@ -119,17 +120,17 @@ void analyze() {
             //if the variable is not alphanumerical
             case UNK:
                 if (activeChar == '/' && nextChar == '*') { //if lexeme is comment
-                    do {
+                    while (activeChar != '*' && nextChar != '/'){
                         lexAdd();
                         readChar();
-                    } while (activeChar != '*' && nextChar != '/');
+                    }
                     token = tokClass[0]; //sets token to comment
                 }
                 else if (activeChar == '"') { //if lexeme is string
-                    do {
+                    while (activeChar != '"'){
                         lexAdd();
                         readChar();
-                    } while (activeChar != '"');
+                    }
                 }
                     //else if(activeChar ==  NONFUNCTIONAL
                 else {
@@ -141,7 +142,6 @@ void analyze() {
                     token = "UNK";
                 }
                 break;
-
             case END:
                 break;
         }
@@ -154,9 +154,20 @@ void lexAdd() {
     lexLength++;
 }
 
+char cleanArr[32];
+void cleanUp() {
+    int x = 0;
+    for(int i = 0; i++; i <= lexLength) {
+        if(!isspace(lexeme[i]) && lexeme[i] != '\n') {
+            cleanArr[x] = lexeme[i];
+            x++;
+        }
+    }
+}
+
 //finds the next character
 void traverseSpace() {
-    while(nextChar == ' ' || nextChar == '\n' || nextChar == EOF) {
+    while(activeChar == ' ' || activeChar == '\n') {
             readChar();
         }
 }
