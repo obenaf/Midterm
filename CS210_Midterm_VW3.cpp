@@ -47,7 +47,6 @@ int main(int argc, char **argv) {
 
     primeRead.get(nextChar);
     while (charClass != END) {
-        readChar();
         analyze();
         primeWrite << sLexeme << " (" << token << ")\n";
         memset(lexeme, 0, sizeof(lexeme));
@@ -75,6 +74,7 @@ void readChar() {
 
 //Sorts characters into token groups
 void analyze() {
+    readChar();
     switch(charClass) {
         //if the char is a digit
         //FOR NUMERIC LITERALS    WORKS
@@ -90,10 +90,11 @@ void analyze() {
             //FOR KEYWORDS AND IDENTIFIERS    ALMOST WORKS
             case ALPHA:
                 //As long as the chars meet criteria for keywords/identifiers
-                while (!(activeChar == ' ' || activeChar == '\n' || opCompare2())) {
+                while (!(nextChar == ' ' || nextChar == '\n' || opCompare2())) {
                     lexAdd();
                     readChar();
                 }
+                lexAdd();
                 sLexeme = lexeme; //converts lexeme array to string
 
                 if (strCompare())//if lexeme matches keyword list
@@ -190,7 +191,7 @@ bool opCompare() {
 
 bool opCompare2() {
     string x;
-    x = activeChar;
+    x = nextChar;
     for(int i = 0; i < 27; i++) {
         if(x == Operators[i])
             return true;
