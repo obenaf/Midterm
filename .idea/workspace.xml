@@ -85,15 +85,16 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="cpp" value="1808" />
+          <entry key="ccx" value="2" />
+          <entry key="cpp" value="2623" />
           <entry key="mm" value="31" />
-          <entry key="txt" value="229" />
+          <entry key="txt" value="283" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="ObjectiveC" value="1839" />
-          <entry key="PLAIN_TEXT" value="229" />
+          <entry key="ObjectiveC" value="2654" />
+          <entry key="PLAIN_TEXT" value="285" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.cidr.testingFrameworks.usages" />
@@ -101,16 +102,16 @@
         <counts>
           <entry key="Disassembly" value="6" />
           <entry key="ObjectiveC" value="7" />
-          <entry key="PLAIN_TEXT" value="69" />
+          <entry key="PLAIN_TEXT" value="88" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="Midterm (disassembly)" value="6" />
           <entry key="cci" value="2" />
-          <entry key="ccx" value="3" />
+          <entry key="ccx" value="4" />
           <entry key="cpp" value="5" />
-          <entry key="cpy" value="64" />
+          <entry key="cpy" value="82" />
           <entry key="h" value="2" />
         </counts>
       </usages-collector>
@@ -119,11 +120,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CS210_Midterm_VW3.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="367">
-              <caret line="61" column="1" lean-forward="true" selection-start-line="61" selection-start-column="1" selection-end-line="61" selection-end-column="1" />
+            <state relative-caret-position="434">
+              <caret line="121" column="24" lean-forward="true" selection-start-line="121" selection-start-column="24" selection-end-line="121" selection-end-column="24" />
               <folding>
                 <element signature="e#311#327#0" expanded="true" />
               </folding>
@@ -132,10 +133,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cmake-build-debug/date.cci">
+        <entry file="file://$PROJECT_DIR$/cmake-build-debug/complex.ccx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" column="51" lean-forward="true" selection-start-line="15" selection-start-column="51" selection-end-line="15" selection-end-column="51" />
+            <state relative-caret-position="68">
+              <caret line="4" column="33" lean-forward="true" selection-start-line="4" selection-start-column="33" selection-end-line="4" selection-end-column="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/cmake-build-debug/complex.ccx.cpy">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="12" column="25" selection-start-line="12" selection-end-line="12" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -153,6 +163,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/cmake-build-debug/date.cci.cpy" />
+        <option value="$PROJECT_DIR$/cmake-build-debug/complex.ccx" />
         <option value="$PROJECT_DIR$/CS210_Midterm_VW3.cpp" />
       </list>
     </option>
@@ -218,7 +229,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Midterm" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="date.cci" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Midterm" TARGET_NAME="Midterm" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Midterm" RUN_TARGET_NAME="Midterm">
+    <configuration name="Midterm" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="complex.ccx" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Midterm" TARGET_NAME="Midterm" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Midterm" RUN_TARGET_NAME="Midterm">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -252,7 +263,7 @@
       <workItem from="1539204483591" duration="401000" />
       <workItem from="1539315958560" duration="469000" />
       <workItem from="1540255579568" duration="6618000" />
-      <workItem from="1540264736598" duration="5367000" />
+      <workItem from="1540264736598" duration="8501000" />
     </task>
     <task id="LOCAL-00001" summary="Added enum and changed lexLength reset position.">
       <created>1538416886724</created>
@@ -289,11 +300,25 @@
       <option name="project" value="LOCAL" />
       <updated>1540263544655</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Actually kind of works now">
+      <created>1540332067236</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1540332067236</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Hot and dirty edition 0.1">
+      <created>1540333611512</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1540333611512</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25096000" />
+    <option name="totallyTimeSpent" value="28230000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -313,15 +338,15 @@
       <window_info active="true" content_ui="combo" x="654" y="161" width="228" height="511" id="Project" order="2" visible="true" weight="0.15704697" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.24255319" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49932885" visible="true" weight="0.24255319" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3432624" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32749563" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.2851064" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50067115" side_tool="true" weight="0.25734267" />
-      <window_info anchor="bottom" id="Version Control" order="10" weight="0.32867134" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50067115" side_tool="true" weight="0.24255319" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.32765958" />
       <window_info anchor="bottom" id="CMake" order="11" weight="0.2083916" />
       <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.49932885" weight="0.2822695" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -363,7 +388,9 @@
     <MESSAGE value="General formatting fixes" />
     <MESSAGE value="Lots of reformatting and readded analyze() logic, still not fully functional and weird issues. Nothing catastrophic." />
     <MESSAGE value="idk anymore man" />
-    <option name="LAST_COMMIT_MESSAGE" value="idk anymore man" />
+    <MESSAGE value="Actually kind of works now" />
+    <MESSAGE value="Hot and dirty edition 0.1" />
+    <option name="LAST_COMMIT_MESSAGE" value="Hot and dirty edition 0.1" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
@@ -400,8 +427,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/cmake-build-debug/complex.ccx" />
-    <entry file="file://$PROJECT_DIR$/cmake-build-debug/complex.ccx.cpy" />
     <entry file="file://$PROJECT_DIR$/cmake-build-debug/Midterm.exe.cpy">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -412,13 +437,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cmake-build-debug/date.cci">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="51" lean-forward="true" selection-start-line="15" selection-start-column="51" selection-end-line="15" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cmake-build-debug/date.cci.cpy">
       <provider editor-type-id="LargeFileEditor">
         <state relative-caret-position="136">
@@ -426,18 +444,39 @@
         </state>
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="16" lean-forward="true" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
+        <state relative-caret-position="-187">
+          <caret line="4" column="12" lean-forward="true" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cmake-build-debug/date.cci">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="51" lean-forward="true" selection-start-line="15" selection-start-column="51" selection-end-line="15" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cmake-build-debug/complex.ccx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="33" lean-forward="true" selection-start-line="4" selection-start-column="33" selection-end-line="4" selection-end-column="33" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/CS210_Midterm_VW3.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="367">
-          <caret line="61" column="1" lean-forward="true" selection-start-line="61" selection-start-column="1" selection-end-line="61" selection-end-column="1" />
+        <state relative-caret-position="434">
+          <caret line="121" column="24" lean-forward="true" selection-start-line="121" selection-start-column="24" selection-end-line="121" selection-end-column="24" />
           <folding>
             <element signature="e#311#327#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cmake-build-debug/complex.ccx.cpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="25" selection-start-line="12" selection-end-line="12" selection-end-column="25" />
         </state>
       </provider>
     </entry>

@@ -77,7 +77,8 @@ void readChar() {
 void analyze() {
     switch(charClass) {
         //if the char is a digit
-        case DIGIT: //numeric literal, may need specification
+        //FOR NUMERIC LITERALS    WORKS
+        case DIGIT:
             while(!(activeChar == ' ' || activeChar == '\n')) {
                 lexAdd();
                 readChar();
@@ -86,8 +87,8 @@ void analyze() {
             token = tokClass[5];
             break;
 
-            //if the value is alphabetical
-            case ALPHA: //Case for keywords and identifiers
+            //FOR KEYWORDS AND IDENTIFIERS    ALMOST WORKS
+            case ALPHA:
                 //As long as the chars meet criteria for keywords/identifiers
                 while (!(activeChar == ' ' || activeChar == '\n' || opCompare2())) {
                     lexAdd();
@@ -103,13 +104,20 @@ void analyze() {
 
             //if the variable is not alphanumerical
             case UNK:
-                if (activeChar == '/' && nextChar == '*') { //if lexeme is comment
+                //FOR COMMENTS    WORKS
+                if (activeChar == '/' && nextChar == '*') {
                     while (!(activeChar == '*' && nextChar == '/')){
                         lexAdd();
                         readChar();
                     }
+                    lexAdd();
+                    readChar();
+                    lexAdd();
+                    readChar(); //I know this is dirty but it works for now
+                    sLexeme = lexeme;
                     token = tokClass[0]; //sets token to comment
                 }
+                //FOR STRINGS    WORKS
                 else if (activeChar == '"') { //if lexeme is string
                     do {
                         lexAdd();
@@ -120,6 +128,7 @@ void analyze() {
                     sLexeme = lexeme;
                     token = tokClass[2]; //sets token to string
                 }
+                //FOR OPERATORS
                 else {
                     while(!(activeChar == ' ' || activeChar == '\n' || charClass != UNK)) {
                         lexAdd();
