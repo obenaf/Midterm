@@ -3,9 +3,7 @@
  * github.com/obenaf
  * Midterm for CS-210
  * 24 Sep 2018
- * Right now the program considers any block of characters separated by spaces
- * to be a single lexeme. This will change when lex logic is added in.
- * There are also weird issues with sorting out newline characters.
+ *
  */
 
 #include<cctype>
@@ -13,7 +11,6 @@
 #include<cstring>
 #include<fstream>
 using namespace std;
-//Operators array
 
 //Token class array
 string tokClass[8] = {"comment", "operator", "string", "keyword", "character literal",
@@ -21,10 +18,10 @@ string tokClass[8] = {"comment", "operator", "string", "keyword", "character lit
 //Global Variables
 char activeChar;
 char nextChar;
-string sLexeme;
 char lexeme[128];
-int lexLength = 0;
+string sLexeme;
 string token;
+int lexLength = 0;
 //I/O file streams
 ifstream primeRead;
 ofstream primeWrite;
@@ -33,9 +30,9 @@ void readChar();
 void analyze();
 void lexAdd();
 void traverseSpace();
-void cleanUp();
 bool strCompare();
 bool opCompare();
+bool opCompare2();
 //Character class definitions
 enum cClass{ALPHA, DIGIT, UNK, END};
 cClass charClass;
@@ -49,7 +46,8 @@ int main(int argc, char **argv) {
     primeWrite.open(writeFile);
 
     primeRead.get(nextChar);
-    while (!(activeChar == EOF)) {
+    while (charClass != END) {
+        readChar();
         analyze();
         primeWrite << sLexeme << " (" << token << ")\n";
         memset(lexeme, 0, sizeof(lexeme));
@@ -69,13 +67,14 @@ void readChar() {
             charClass = DIGIT;
         else if(isalpha(activeChar))
             charClass = ALPHA;
-        else
+        else if(activeChar != EOF)
             charClass = UNK;
+        else
+            charClass = END;
 }
 
 //Sorts characters into token groups
 void analyze() {
-    readChar();
     switch(charClass) {
         //if the char is a digit
         case DIGIT: //numeric literal, may need specification
@@ -90,7 +89,7 @@ void analyze() {
             //if the value is alphabetical
             case ALPHA: //Case for keywords and identifiers
                 //As long as the chars meet criteria for keywords/identifiers
-                while (!(activeChar == ' ' || activeChar == '\n' || charClass != ALPHA)) {
+                while (!(activeChar == ' ' || activeChar == '\n' || opCompare2())) {
                     lexAdd();
                     readChar();
                 }
@@ -112,13 +111,17 @@ void analyze() {
                     token = tokClass[0]; //sets token to comment
                 }
                 else if (activeChar == '"') { //if lexeme is string
-                    while (activeChar != '"') {
+                    do {
                         lexAdd();
                         readChar();
-                    }
+                    } while (activeChar != '"');
+                    lexAdd();
+                    readChar();
+                    sLexeme = lexeme;
+                    token = tokClass[2]; //sets token to string
                 }
                 else {
-                    while(!(activeChar == ' ' || activeChar == '\n')) {
+                    while(!(activeChar == ' ' || activeChar == '\n' || charClass != UNK)) {
                         lexAdd();
                         readChar();
                     }
@@ -142,8 +145,8 @@ void lexAdd() {
 
 //finds the next character
 void traverseSpace() {
-    while(activeChar == ' ' || activeChar == '\n') {
-            readChar();
+    while(nextChar == ' ' || nextChar == '\n') {
+        readChar();
         }
 }
 
@@ -171,6 +174,16 @@ string Operators[27] = {".", "<", ">", "(", ")", "+", "-", "*", "/",
 bool opCompare() {
     for(int i = 0; i < 27; i++) {
         if(sLexeme == Operators[i])
+            return true;
+    }
+    return false;
+}
+
+bool opCompare2() {
+    string x;
+    x = activeChar;
+    for(int i = 0; i < 27; i++) {
+        if(x == Operators[i])
             return true;
     }
     return false;
