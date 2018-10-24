@@ -32,7 +32,7 @@ void lexAdd();
 void traverseSpace();
 bool strCompare();
 bool opCompare();
-bool opCompare2();
+bool opCompare2(int);
 //Character class definitions
 enum cClass{ALPHA, DIGIT, UNK, END};
 cClass charClass;
@@ -40,18 +40,21 @@ cClass charClass;
 int main(int argc, char **argv) {
     //sets I/O file names
     string readFile = argv[1];
-    string writeFile = readFile + ".cpy";
+    string writeFile = readFile + ".lexer";
     //opens files
     primeRead.open(readFile);
     primeWrite.open(writeFile);
 
     primeRead.get(nextChar);
     while (charClass != END) {
+        readChar();
+        if(activeChar == EOF)
+            break;
         analyze();
         primeWrite << sLexeme << " (" << token << ")\n";
-        memset(lexeme, 0, sizeof(lexeme));
+        memset(lexeme, 0, sizeof(lexeme)); //resets lexeme array
         lexLength = 0; //resets lexLength
-        traverseSpace();
+        traverseSpace(); //eliminates whitespace
     }
     primeRead.close();
     primeWrite.close();
@@ -74,23 +77,23 @@ void readChar() {
 
 //Sorts characters into token groups
 void analyze() {
-    readChar();
     switch(charClass) {
         //if the char is a digit
-        //FOR NUMERIC LITERALS    WORKS
+        //FOR NUMERIC LITERALS
         case DIGIT:
-            while(!(activeChar == ' ' || activeChar == '\n')) {
+            while(!(nextChar == ' ' || nextChar == '\n' || opCompare2(25))) {
                 lexAdd();
                 readChar();
             }
+            lexAdd();
             sLexeme = lexeme;
             token = tokClass[5];
             break;
 
-            //FOR KEYWORDS AND IDENTIFIERS    WORKS
+            //FOR KEYWORDS AND IDENTIFIERS
             case ALPHA:
                 //As long as the chars meet criteria for keywords/identifiers
-                while (!(nextChar == ' ' || nextChar == '\n' || opCompare2())) {
+                while (!(nextChar == ' ' || nextChar == '\n' || opCompare2(27))) {
                     lexAdd();
                     readChar();
                 }
@@ -105,7 +108,7 @@ void analyze() {
 
             //if the variable is not alphanumerical
             case UNK:
-                //FOR COMMENTS    WORKS
+                //FOR COMMENTS
                 if (activeChar == '/' && nextChar == '*') {
                     while (!(activeChar == '*' && nextChar == '/')){
                         lexAdd();
@@ -118,14 +121,15 @@ void analyze() {
                     sLexeme = lexeme;
                     token = tokClass[0]; //sets token to comment
                 }
-                //FOR STRINGS    WORKS
+                //FOR STRINGS
                 else if (activeChar == '"') { //if lexeme is string
                     do {
                         lexAdd();
                         readChar();
-                    } while (activeChar != '"');
+                    } while (nextChar != '"');
                     lexAdd();
                     readChar();
+                    lexAdd();
                     sLexeme = lexeme;
                     token = tokClass[2]; //sets token to string
                 }
@@ -141,12 +145,13 @@ void analyze() {
                     sLexeme = lexeme;
                     token = tokClass[4];
                 }
-                //FOR OPERATORS    WORKS
+                //FOR OPERATORS
                 else {
-                    while(!(activeChar == ' ' || activeChar == '\n' || charClass != UNK)) {
+                    while(!(nextChar == ' ' || nextChar == '\n' || isalnum(nextChar) || opCompare2(27))) {
                         lexAdd();
                         readChar();
                     }
+                    lexAdd();
                     sLexeme = lexeme;
                     if(opCompare())
                         token = tokClass[1]; //sets to operator
@@ -156,6 +161,8 @@ void analyze() {
                 break;
             case END:
                 break;
+        default:
+            break;
         }
 }
 
@@ -180,7 +187,7 @@ string Keywords[37] = {"accessor", "and", "array", "begin", "bool",
                        "positive", "procedure", "range", "return", "struct",
                        "subtype", "then", "type", "when", "while"};
 //compares the lexeme to keyword list
-bool strCompare() { //may improve search in future
+bool strCompare() {
     for(int i = 0; i < 37; i++) {
         if(sLexeme == Keywords[i])
             return true;
@@ -188,11 +195,11 @@ bool strCompare() { //may improve search in future
     return false;
 }
 
-string Operators[27] = {".", "<", ">", "(", ")", "+", "-", "*", "/",
-                        "|", "&", ";", ",", ":", "[", "]", "=", ":=",
+string Operators[27] = {"<", ">", "(", ")", "+", "-", "*", "/",
+                        "|", "&", ";", ":", "[", "]", "=", ":=",
                         "..", "<<", ">>", "<>", "<=", ">=", "**",
-                        "!=", "=>"};
-
+                        "!=", "=>", ".", ","};
+//Compares operators to completed output strings
 bool opCompare() {
     for(int i = 0; i < 27; i++) {
         if(sLexeme == Operators[i])
@@ -200,11 +207,11 @@ bool opCompare() {
     }
     return false;
 }
-
-bool opCompare2() {
+//Compares operators to single characters
+bool opCompare2(int y) {
     string x;
     x = nextChar;
-    for(int i = 0; i < 27; i++) {
+    for(int i = 0; i < y; i++) {
         if(x == Operators[i])
             return true;
     }
