@@ -3,7 +3,8 @@
  * github.com/obenaf
  * Midterm for CS-210
  * 24 Sep 2018
- *
+ * This program takes a file and
+ * splits it into individual lexemes
  */
 
 #include<cctype>
@@ -48,7 +49,7 @@ int main(int argc, char **argv) {
     primeRead.get(nextChar);
     while (charClass != END) {
         readChar();
-        if(activeChar == EOF)
+        if(nextChar == EOF)
             break;
         analyze();
         primeWrite << sLexeme << " (" << token << ")\n";
@@ -78,7 +79,6 @@ void readChar() {
 //Sorts characters into token groups
 void analyze() {
     switch(charClass) {
-        //if the char is a digit
         //FOR NUMERIC LITERALS
         case DIGIT:
             while(!(nextChar == ' ' || nextChar == '\n' || opCompare2(25))) {
@@ -106,7 +106,6 @@ void analyze() {
                     token = tokClass[6]; //sets as identifier
                 break;
 
-            //if the variable is not alphanumerical
             case UNK:
                 //FOR COMMENTS
                 if (activeChar == '/' && nextChar == '*') {
@@ -159,6 +158,7 @@ void analyze() {
                     token = "UNK";
                 }
                 break;
+
             case END:
                 break;
         default:
@@ -201,8 +201,8 @@ string Operators[27] = {"<", ">", "(", ")", "+", "-", "*", "/",
                         "!=", "=>", ".", ","};
 //Compares operators to completed output strings
 bool opCompare() {
-    for(int i = 0; i < 27; i++) {
-        if(sLexeme == Operators[i])
+    for(string i : Operators) {
+        if(sLexeme == i)
             return true;
     }
     return false;
