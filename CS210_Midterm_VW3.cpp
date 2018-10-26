@@ -20,7 +20,7 @@ string tokClass[8] = {"comment", "operator", "string", "keyword", "character lit
 int imSorry = 0;
 char activeChar;
 char nextChar;
-char lexeme[128];
+char lexeme[1026];
 string sLexeme;
 string token;
 int lexLength = 0;
@@ -35,7 +35,7 @@ void traverseSpace();
 bool strCompare();
 bool opCompare();
 bool opCompare2(int);
-bool opCompare3();
+bool hexCompare();
 //Character class definitions
 enum cClass{ALPHA, DIGIT, UNK};
 cClass charClass;
@@ -49,7 +49,8 @@ int main(int argc, char **argv) {
     primeWrite.open(writeFile);
 
     primeRead.get(nextChar);
-    while (imSorry < 16) { //I'm sorry this is really dumb but it works
+    traverseSpace(); //Added because trie.cci is a jerk
+    while (imSorry < 64) { //I'm sorry this is really dumb but it works
         imSorry = 0;
         readChar();
         analyze();
@@ -81,7 +82,9 @@ void analyze() {
     switch(charClass) {
         //FOR NUMERIC LITERALS
         case DIGIT:
-            while(!(nextChar == ' ' || nextChar == '\n' || opCompare2(25))) {
+            while(!(nextChar == ' ' || nextChar == '\n' || opCompare2(26))) {
+                if(isalpha(nextChar) && !hexCompare())
+                    break;
                 lexAdd();
                 readChar();
             }
@@ -115,8 +118,7 @@ void analyze() {
                     }
                     lexAdd();
                     readChar();
-                    lexAdd();
-                    readChar(); //adds the final */
+                    lexAdd();//adds the final */
                     sLexeme = lexeme;
                     token = tokClass[0]; //sets token to comment
                 }
@@ -146,11 +148,10 @@ void analyze() {
                 }
                 //FOR OPERATORS
                 else {
-                    while(!(nextChar == ' ' || nextChar == '\n' || isalnum(nextChar))) {
+                    //I know this is dirty but I ran in to it last second
+                    while(!(nextChar == ' ' || nextChar == '\n' || isalnum(nextChar) || opCompare2(10) || nextChar == '"' || nextChar == 39)) {
                         lexAdd();
                         readChar();
-                        if(opCompare2(27))
-                            break;
                     }
                     lexAdd();
                     sLexeme = lexeme;
@@ -173,7 +174,7 @@ void lexAdd() {
 
 //finds the next character
 void traverseSpace() {
-    while((nextChar == ' ' || nextChar == '\n') && (imSorry <= 16)) {
+    while((nextChar == ' ' || nextChar == '\n') && (imSorry <= 64)) {
         readChar();
         imSorry++;
         }
@@ -195,16 +196,17 @@ bool strCompare() {
     return false;
 }
 
-string Operators[27] = {"<", ">", "(", ")", "+", "-", "*", "/",
+string Operators[27] = {"(", ")", "+", "-", "/",
                         "|", "&", ";", ":", "[", "]", "=", ":=",
                         "..", "<<", ">>", "<>", "<=", ">=", "**",
-                        "!=", "=>", ".", ","};
+                        "!=", "=>", "<", ">", "*", ",", "."};
 //Compares operators to completed output strings
 bool opCompare() {
     for(string i : Operators) {
         if(sLexeme == i)
             return true;
     }
+
     return false;
 }
 //Compares operators to single characters
@@ -213,6 +215,15 @@ bool opCompare2(int y) {
     x = nextChar;
     for(int i = 0; i < y; i++) {
         if(x == Operators[i])
+            return true;
+    }
+    return false;
+}
+//Checks for hexadecimal letters in numeric literals
+char Hexa[6] = {'a', 'b', 'c', 'd', 'e', 'f'};
+bool hexCompare() {
+    for(char i : Hexa) {
+        if(nextChar == i)
             return true;
     }
     return false;
