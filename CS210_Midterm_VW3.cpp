@@ -17,6 +17,7 @@ using namespace std;
 string tokClass[8] = {"comment", "operator", "string", "keyword", "character literal",
                       "numeric literal", "identifier", "UNK"};
 //Global Variables
+int imSorry = 0;
 char activeChar;
 char nextChar;
 char lexeme[128];
@@ -34,8 +35,9 @@ void traverseSpace();
 bool strCompare();
 bool opCompare();
 bool opCompare2(int);
+bool opCompare3();
 //Character class definitions
-enum cClass{ALPHA, DIGIT, UNK, END};
+enum cClass{ALPHA, DIGIT, UNK};
 cClass charClass;
 
 int main(int argc, char **argv) {
@@ -47,10 +49,9 @@ int main(int argc, char **argv) {
     primeWrite.open(writeFile);
 
     primeRead.get(nextChar);
-    while (charClass != END) {
+    while (imSorry < 16) { //I'm sorry this is really dumb but it works
+        imSorry = 0;
         readChar();
-        if(nextChar == EOF)
-            break;
         analyze();
         primeWrite << sLexeme << " (" << token << ")\n";
         memset(lexeme, 0, sizeof(lexeme)); //resets lexeme array
@@ -65,15 +66,14 @@ int main(int argc, char **argv) {
 //Reads characters and determines char type
 void readChar() {
     activeChar = nextChar;
-    primeRead.get(nextChar);
+    if(primeRead.get(nextChar)) {
         if(isdigit(activeChar))
             charClass = DIGIT;
         else if(isalpha(activeChar))
             charClass = ALPHA;
-        else if(activeChar != EOF)
-            charClass = UNK;
         else
-            charClass = END;
+            charClass = UNK;
+    }
 }
 
 //Sorts characters into token groups
@@ -116,7 +116,7 @@ void analyze() {
                     lexAdd();
                     readChar();
                     lexAdd();
-                    readChar(); //I know this is dirty but it works for now
+                    readChar(); //adds the final */
                     sLexeme = lexeme;
                     token = tokClass[0]; //sets token to comment
                 }
@@ -128,7 +128,7 @@ void analyze() {
                     } while (nextChar != '"');
                     lexAdd();
                     readChar();
-                    lexAdd();
+                    lexAdd(); //adds the final "
                     sLexeme = lexeme;
                     token = tokClass[2]; //sets token to string
                 }
@@ -140,15 +140,17 @@ void analyze() {
                     } while(nextChar != 39);
                     lexAdd();
                     readChar();
-                    lexAdd();
+                    lexAdd(); //adds the final '
                     sLexeme = lexeme;
                     token = tokClass[4];
                 }
                 //FOR OPERATORS
                 else {
-                    while(!(nextChar == ' ' || nextChar == '\n' || isalnum(nextChar) || opCompare2(27))) {
+                    while(!(nextChar == ' ' || nextChar == '\n' || isalnum(nextChar))) {
                         lexAdd();
                         readChar();
+                        if(opCompare2(27))
+                            break;
                     }
                     lexAdd();
                     sLexeme = lexeme;
@@ -157,9 +159,6 @@ void analyze() {
                     else
                     token = "UNK";
                 }
-                break;
-
-            case END:
                 break;
         default:
             break;
@@ -174,8 +173,9 @@ void lexAdd() {
 
 //finds the next character
 void traverseSpace() {
-    while(nextChar == ' ' || nextChar == '\n') {
+    while((nextChar == ' ' || nextChar == '\n') && (imSorry <= 16)) {
         readChar();
+        imSorry++;
         }
 }
 
