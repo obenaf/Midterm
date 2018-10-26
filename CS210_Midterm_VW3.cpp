@@ -2,9 +2,16 @@
  * Built by Richard Deming
  * github.com/obenaf
  * Midterm for CS-210
- * 24 Sep 2018
- * This program takes a file and
- * splits it into individual lexemes
+ * FINAL EDITION
+ * Oct 26 2018
+ * This program takes a file and splits it into individual lexemes
+ * Pulls two characters into a buffer and compares them with logic to
+ * sort. Some of the logic ended up being a bit messy. I could redo but
+ * I am running short on time. Couldn't make EOF functions work properly.
+ * The program just kept reading in newline characters for some reason and
+ * never reached EOF. I added a counter for traverseSpace() to signal an exit.
+ * I know it's bad practice but it's the only way I could get the program to
+ * exit properly.
  */
 
 #include<cctype>
@@ -48,7 +55,7 @@ int main(int argc, char **argv) {
     primeRead.open(readFile);
     primeWrite.open(writeFile);
 
-    primeRead.get(nextChar);
+    primeRead.get(nextChar); //Prime first use of readChar()
     traverseSpace(); //Added because trie.cci is a jerk
     while (imSorry < 64) { //I'm sorry this is really dumb but it works
         imSorry = 0;
@@ -149,7 +156,8 @@ void analyze() {
                 //FOR OPERATORS
                 else {
                     //I know this is dirty but I ran in to it last second
-                    while(!(nextChar == ' ' || nextChar == '\n' || isalnum(nextChar) || opCompare2(10) || nextChar == '"' || nextChar == 39)) {
+                    while(!(nextChar == ' ' || nextChar == '\n' || isalnum(nextChar) || opCompare2(10)
+                    || nextChar == '"' || nextChar == 39)) {
                         lexAdd();
                         readChar();
                     }
@@ -209,6 +217,7 @@ bool opCompare() {
 
     return false;
 }
+
 //Compares operators to single characters
 bool opCompare2(int y) {
     string x;
@@ -219,6 +228,7 @@ bool opCompare2(int y) {
     }
     return false;
 }
+
 //Checks for hexadecimal letters in numeric literals
 char Hexa[6] = {'a', 'b', 'c', 'd', 'e', 'f'};
 bool hexCompare() {
